@@ -4,7 +4,7 @@ import re
 import subprocess
 
 # def update():
-#     date = datetime.date(2001, 10, 14)
+#     date = datetime.date(2001, 10, 15)
 #     return another_date
 
 # print(update())
@@ -28,7 +28,7 @@ def process(new_date):
     subprocess.check_output(['env', f'GIT_COMMITTER_DATE={currentTime}', 'git', 'commit', f'--date={currentTime}', '-am', 'message'])
 
 def main():
-    start_date = datetime.date(2001, 10, 14)
+    start_date = datetime.date(2001, 10, 15)
     end_date = datetime.date.today()
     while start_date < end_date:
         diff_date = datetime.timedelta(days=1)
