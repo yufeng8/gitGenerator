@@ -3,11 +3,9 @@ import datetime
 import re
 import subprocess
 
-def update():
-    date = datetime.date(2019, 5, 15)
-    diff_date = datetime.timedelta(days=1)
-    another_date = date + diff_date
-    return another_date
+# def update():
+#     date = datetime.date(2019, 1, 17)
+#     return another_date
 
 # print(update())
 
@@ -15,17 +13,26 @@ def readFile():
     with open("generate.py") as f:
         return f.read()
 
-string = readFile()
-
-newStr = re.sub(r'datetime\.date\([0-9]+, [0-9]+, [0-9]+\)', repr(update()), string)
 # print(newStr)
 
-def writeFile():
+def writeFile(newStr):
     with open("generate.py", "w") as f:
         f.write(newStr)
 
-writeFile()
+def process(new_date):
+    string = readFile()
+    newStr = re.sub(r'datetime\.date\([0-9]+, [0-9]+, [0-9]+\)', repr(new_date), string)
+    writeFile(newStr)
 
-currentTime = datetime.datetime.combine(update(), datetime.time()).strftime("%c") # .strftime('%a %b %-d %H:%M:%S ')
+    currentTime = datetime.datetime.combine(new_date, datetime.time()).strftime("%c") # .strftime('%a %b %-d %H:%M:%S ')
+    subprocess.check_output(['env', f'GIT_COMMITTER_DATE={currentTime}', 'git', 'commit', f'--date={currentTime}', '-am', 'message'])
 
-subprocess.check_output(['env', f'GIT_COMMITTER_DATE={currentTime}', 'git', 'commit', f'--date={currentTime}', '-am', 'message'])
+def main():
+    start_date = datetime.date(2019, 1, 17)
+    end_date = datetime.date.today()
+    while start_date < end_date:
+        diff_date = datetime.timedelta(days=1)
+        start_date = start_date + diff_date
+        process(start_date)
+
+main()
