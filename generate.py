@@ -1,9 +1,10 @@
 import time
 import datetime
 import re
+import subprocess
 
 def update():
-    date = datetime.date(2019, 5, 7)
+    date = datetime.date(2019, 5, 13)
     diff_date = datetime.timedelta(days=1)
     another_date = date + diff_date
     return another_date
@@ -24,3 +25,7 @@ def writeFile():
         f.write(newStr)
 
 writeFile()
+
+currentTime = datetime.datetime.combine(update(), datetime.time()).strftime("%c") # .strftime('%a %b %-d %H:%M:%S ')
+
+subprocess.check_output(['env', f'GIT_COMMITTER_DATE={currentTime}', 'git', 'commit', f'--date={currentTime}', '-am', 'message'])
