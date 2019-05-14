@@ -4,7 +4,7 @@ import re
 import subprocess
 
 def update():
-    date = datetime.date(2019, 5, 13)
+    date = datetime.date(2019, 5, 14)
     diff_date = datetime.timedelta(days=1)
     another_date = date + diff_date
     return another_date
